@@ -13,7 +13,7 @@ UP = (0, -1)
 DOWN = (0, 1)
 LEFT = (-1, 0)
 RIGHT = (1, 0)
-
+list_dir = (UP, DOWN, LEFT, RIGHT)
 # Цвет фона - черный:
 BOARD_BACKGROUND_COLOR = (0, 0, 0)
 
@@ -27,7 +27,7 @@ APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
 
 # Скорость движения змейки:
-SPEED = 20
+SPEED = 5
 
 # Настройка игрового окна:
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -94,7 +94,7 @@ class Snake(GameObject):
         super().__init__()
         self.length = 1
         self.positions = [(self.position)]
-        self.direction = RIGHT
+        self.direction = choice(list_dir)
         self.next_direction = None
         self.body_color = SNAKE_COLOR
         self.last = None
@@ -112,24 +112,26 @@ class Snake(GameObject):
     def move(self):
         """Moves the snake"""
         self.get_head_position()
-        self.last = self.positions[-1]
-        self.length = len(self.positions)
         if self.direction == UP:
             self.positions.insert(
                 0, (self.positions[0][0], self.positions[0][1] - 1 * GRID_SIZE))
-            self.positions.pop(self.positions.index(self.last))
+            if len(self.positions) > self.length:
+                self.positions.pop()
         elif self.direction == DOWN:
             self.positions.insert(
                 0, (self.positions[0][0], self.positions[0][1] + 1 * GRID_SIZE))
-            self.positions.pop(self.positions.index(self.last))
+            if len(self.positions) > self.length:
+                self.positions.pop()
         elif self.direction == LEFT:
             self.positions.insert(
                 0, (self.positions[0][0] - 1 * GRID_SIZE, self.positions[0][1]))
-            self.positions.pop(self.positions.index(self.last))
+            if len(self.positions) > self.length:
+                self.positions.pop()
         elif self.direction == RIGHT:
             self.positions.insert(
                 0, (self.positions[0][0] + 1 * GRID_SIZE, self.positions[0][1]))
-            self.positions.pop(self.positions.index(self.last))
+            if len(self.positions) > self.length:
+                self.positions.pop()
 
     def draw(self):
         """Draws the snake"""
@@ -176,19 +178,23 @@ def main():
     # Инициализация PyGame:
     pygame.init()
     # Тут нужно создать экземпляры классов.
-    apple = Apple()
+
     snake = Snake()
+    apple = Apple()
 
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
-        snake.draw()
-        snake.move()
         snake.update_direction()
+        snake.move()
+
+        if snake.get_head_position() == apple.position:
+            snake.length += 1
+            apple.randomize_position()
+        screen.fill(BOARD_BACKGROUND_COLOR)
+        snake.draw()
         apple.draw()
         pygame.display.update()
-
-    # Тут опишите основную логику игры.
 
 
 if __name__ == '__main__':
