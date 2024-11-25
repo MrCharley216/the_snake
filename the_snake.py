@@ -115,23 +115,33 @@ class Snake(GameObject):
         if self.direction == UP:
             self.positions.insert(
                 0, (self.positions[0][0], self.positions[0][1] - 1 * GRID_SIZE))
-            if len(self.positions) > self.length:
+            if len(self.positions) - 1 > self.length:
                 self.positions.pop()
+            if self.positions[0][1] < 0:
+                self.positions[0] = (self.positions[0][0],
+                                     GRID_HEIGHT * GRID_SIZE)
         elif self.direction == DOWN:
             self.positions.insert(
                 0, (self.positions[0][0], self.positions[0][1] + 1 * GRID_SIZE))
-            if len(self.positions) > self.length:
+            if len(self.positions) - 1 > self.length:
                 self.positions.pop()
+            if self.positions[0][1] >= GRID_HEIGHT * GRID_SIZE:
+                self.positions[0] = (self.positions[0][0], 0)
         elif self.direction == LEFT:
             self.positions.insert(
                 0, (self.positions[0][0] - 1 * GRID_SIZE, self.positions[0][1]))
-            if len(self.positions) > self.length:
+            if len(self.positions) - 1 > self.length:
                 self.positions.pop()
+            if self.positions[0][0] < 0:
+                self.positions[0] = (
+                    GRID_WIDTH * GRID_SIZE, self.positions[0][1])
         elif self.direction == RIGHT:
             self.positions.insert(
                 0, (self.positions[0][0] + 1 * GRID_SIZE, self.positions[0][1]))
-            if len(self.positions) > self.length:
+            if len(self.positions) - 1 > self.length:
                 self.positions.pop()
+            if self.positions[0][0] >= GRID_WIDTH * GRID_SIZE:
+                self.positions[0] = (0, self.positions[0][1])
 
     def draw(self):
         """Draws the snake"""
