@@ -114,7 +114,8 @@ class Snake(GameObject):
         self.get_head_position()
         if self.direction == UP:
             self.positions.insert(
-                0, (self.positions[0][0], self.positions[0][1] - 1 * GRID_SIZE))
+                0, (self.positions[0][0],
+                    self.positions[0][1] - 1 * GRID_SIZE))
             if len(self.positions) - 1 > self.length:
                 self.positions.pop()
             if self.positions[0][1] < 0:
@@ -122,14 +123,16 @@ class Snake(GameObject):
                                      GRID_HEIGHT * GRID_SIZE)
         elif self.direction == DOWN:
             self.positions.insert(
-                0, (self.positions[0][0], self.positions[0][1] + 1 * GRID_SIZE))
+                0, (self.positions[0][0],
+                    self.positions[0][1] + 1 * GRID_SIZE))
             if len(self.positions) - 1 > self.length:
                 self.positions.pop()
             if self.positions[0][1] >= GRID_HEIGHT * GRID_SIZE:
                 self.positions[0] = (self.positions[0][0], 0)
         elif self.direction == LEFT:
             self.positions.insert(
-                0, (self.positions[0][0] - 1 * GRID_SIZE, self.positions[0][1]))
+                0, (self.positions[0][0] - 1 * GRID_SIZE,
+                    self.positions[0][1]))
             if len(self.positions) - 1 > self.length:
                 self.positions.pop()
             if self.positions[0][0] < 0:
@@ -137,7 +140,8 @@ class Snake(GameObject):
                     GRID_WIDTH * GRID_SIZE, self.positions[0][1])
         elif self.direction == RIGHT:
             self.positions.insert(
-                0, (self.positions[0][0] + 1 * GRID_SIZE, self.positions[0][1]))
+                0, (self.positions[0][0] + 1 * GRID_SIZE,
+                    self.positions[0][1]))
             if len(self.positions) - 1 > self.length:
                 self.positions.pop()
             if self.positions[0][0] >= GRID_WIDTH * GRID_SIZE:
@@ -245,9 +249,11 @@ if __name__ == '__main__':
 #                 game_object.next_direction = UP
 #             elif event.key == pygame.K_DOWN and game_object.direction != UP:
 #                 game_object.next_direction = DOWN
-#             elif event.key == pygame.K_LEFT and game_object.direction != RIGHT:
+#             elif event.key == pygame.K_LEFT and game_object.direction != 
+# RIGHT:
 #                 game_object.next_direction = LEFT
-#             elif event.key == pygame.K_RIGHT and game_object.direction != LEFT:
+#             elif event.key == pygame.K_RIGHT and game_object.direction != 
+# LEFT:
 #                 game_object.next_direction = RIGHT
 
 # Метод обновления направления после нажатия на кнопку
