@@ -130,7 +130,7 @@ class Snake(GameObject):
             if self.positions[0][0] >= GRID_WIDTH * GRID_SIZE:
                 self.positions[0] = (0, head_y)
         self.positions.insert(0, self.positions[0])
-        if len(self.positions) - 1 > self.length:
+        if len(self.positions) - 1 > self.length + 1:
             self.positions.pop()
 
     def draw(self):
