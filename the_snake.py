@@ -21,11 +21,16 @@ BOARD_BACKGROUND_COLOR = (0, 0, 0)
 # Цвет границы ячейки
 BORDER_COLOR = (93, 216, 228)
 
+# Цвет занятой ячейки
+CELL_COLOR = (255, 255, 255)
+
 # Цвет яблока
 APPLE_COLOR = (255, 0, 0)
 
 # Цвет змейки
 SNAKE_COLOR = (0, 255, 0)
+
+# Цвет камня
 
 # Скорость движения змейки:
 SPEED = 5
@@ -44,30 +49,38 @@ class GameObject:
     """GameObject class description."""
 
     def __init__(self):
-        """Constructor"""
+        """Constructor."""
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
-        self.body_color = None
+        self.body_color = CELL_COLOR
+
+    def draw_cell(self, cell=((SCREEN_WIDTH // 3) * GRID_SIZE, (SCREEN_HEIGHT // 4) * GRID_SIZE)):
+        """Draws the cell."""
+        rect = pg.Rect(cell, (GRID_SIZE, GRID_SIZE))
+        pg.draw.rect(screen, self.body_color, rect)
+        pg.draw.rect(screen, self.body_color, rect, 1)
 
     def draw(self):
         """Draws the game object."""
-        pass
+        NotImplementedError
 
 
 class Apple(GameObject):
     """Apple class description."""
 
-    def __init__(self):
+    def __init__(self, emp_cells):
         super().__init__()
         self.body_color = APPLE_COLOR
-        Apple.randomize_position(self)
+        Apple.randomize_position(emp_cells)
 
     # Метод случайного позиционирования яблока
-    def randomize_position(self):
+    def randomize_position(self, emp_cells):
         """Randomizes the position of the apple."""
         self.position = (
             randint(0, GRID_WIDTH) * GRID_SIZE,
             randint(0, GRID_HEIGHT) * GRID_SIZE
         )
+        while self.position in emp_cells:
+            self.randomize_position(emp_cells)
     # Метод отрисовки яблока
 
     def draw(self):
@@ -80,34 +93,29 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Snake class description."""
 
-    length = 1
-    positions: list
-    direction = RIGHT
-    next_direction = None
-    body_color = SNAKE_COLOR
-
     def __init__(self):
         """Constructor."""
         super().__init__()
         self.length = 1
-        self.positions = [(self.position)]
+        self.positions: list
+        self.positions = [self.position]
         self.direction = choice(list_dir)
         self.next_direction = None
         self.body_color = SNAKE_COLOR
         self.last = None
 
     def get_head_position(self):
-        """Returns the head position of the snake"""
+        """Returns the head position of the snake."""
         return self.positions[0]
 
     def update_direction(self):
-        """Updates the direction of the snake"""
+        """Updates the direction of the snake."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
     def move(self):
-        """Moves the snake"""
+        """Moves the snake."""
         self.get_head_position()
         head_x, head_y = self.positions[0]
         if self.direction == UP:
@@ -131,7 +139,7 @@ class Snake(GameObject):
             self.positions.pop()
 
     def draw(self):
-        """Draws the snake"""
+        """Draws the snake."""
         for position in self.positions[:-1]:
             rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
             pg.draw.rect(screen, self.body_color, rect)
@@ -154,7 +162,7 @@ class Snake(GameObject):
 
 
 def handle_keys(game_object):
-    """Handles user input"""
+    """Handles user input."""
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
@@ -171,13 +179,13 @@ def handle_keys(game_object):
 
 
 def main():
-    """Main function"""
+    """Main function."""
     # Инициализация pg:
     pg.init()
     # Тут нужно создать экземпляры классов.
 
     snake = Snake()
-    apple = Apple()
+    apple = Apple(snake.positions)
 
     while True:
         clock.tick(SPEED)
@@ -187,7 +195,7 @@ def main():
 
         if snake.get_head_position() == apple.position:
             snake.length += 1
-            apple.randomize_position()
+            apple.randomize_position(snake.positions)
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw()
         apple.draw()
