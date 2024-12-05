@@ -1,4 +1,4 @@
-import pygame
+import pg
 import pytest
 
 
@@ -71,6 +71,7 @@ def test_snake_inherits_from_game_object(_the_snake):
     EXPECTED_SNAKE_ATTRS,
     ids=[elem[1] for elem in EXPECTED_SNAKE_ATTRS]
 )
+
 def test_snake_attributes(snake, attr_type, attr_name):
     assert hasattr(snake, attr_name), (
         f'Убедитесь, что у объектов класса `Snake` определен {attr_type} '
@@ -101,6 +102,7 @@ EXPECTED_MODULE_ELEMENTS = (
     EXPECTED_MODULE_ELEMENTS,
     ids=[elem[1] for elem in EXPECTED_MODULE_ELEMENTS]
 )
+
 def test_elements_exist(element_type, element_name, _the_snake):
     assert hasattr(_the_snake, element_name), (
         f'Убедитесь, что в модуле `the_snake` определена {element_type} '
@@ -111,10 +113,11 @@ def test_elements_exist(element_type, element_name, _the_snake):
 @pytest.mark.parametrize(
     'expected_type, var_name',
     (
-        (pygame.Surface, 'screen'),
-        (pygame.time.Clock, 'clock'),
+        (pg.Surface, 'screen'),
+        (pg.time.Clock, 'clock'),
     ),
 )
+
 def test_vars_type(expected_type, var_name, _the_snake):
     assert isinstance(getattr(_the_snake, var_name, None), expected_type), (
         'Убедитесь, что в модуле `the_snake` есть переменная '
@@ -126,6 +129,7 @@ def test_vars_type(expected_type, var_name, _the_snake):
     'func_name',
     ('handle_keys', 'main'),
 )
+
 def test_vars_are_functions(func_name, _the_snake):
     assert callable(getattr(_the_snake, func_name, None)), (
         f'Убедитесь, что переменная `{func_name}` - это функция.'

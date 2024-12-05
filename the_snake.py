@@ -1,6 +1,6 @@
+"""The snake game."""
 from random import choice, randint
-
-import pygame
+import pg as pg
 
 # Константы для размеров поля и сетки:
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
@@ -30,18 +30,17 @@ SNAKE_COLOR = (0, 255, 0)
 SPEED = 5
 
 # Настройка игрового окна:
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
+screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
 
 # Заголовок окна игрового поля:
-pygame.display.set_caption('Змейка')
+pg.display.set_caption('Змейка')
 
 # Настройка времени:
-clock = pygame.time.Clock()
+clock = pg.time.Clock()
 
 
-# Тут опишите все классы игры.
 class GameObject:
-    """GameObject class description"""
+    """GameObject class description."""
 
     def __init__(self):
         """Constructor"""
@@ -49,14 +48,12 @@ class GameObject:
         self.body_color = None
 
     def draw(self):
-        """Draws the game object"""
+        """Draws the game object."""
         pass
-
-# Описание класса яблока
 
 
 class Apple(GameObject):
-    """Apple class description"""
+    """Apple class description."""
 
     def __init__(self):
         super().__init__()
@@ -65,7 +62,7 @@ class Apple(GameObject):
 
     # Метод случайного позиционирования яблока
     def randomize_position(self):
-        """Randomizes the position of the apple"""
+        """Randomizes the position of the apple."""
         self.position = (
             randint(0, GRID_WIDTH) * GRID_SIZE,
             randint(0, GRID_HEIGHT) * GRID_SIZE
@@ -73,24 +70,23 @@ class Apple(GameObject):
     # Метод отрисовки яблока
 
     def draw(self):
-        """Draws the apple"""
-        rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, self.body_color, rect)
-        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+        """Draws the apple."""
+        rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
+        pg.draw.rect(screen, self.body_color, rect)
+        pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
-    """Snake class description"""
+    """Snake class description."""
 
     length = 1
     positions: list
     direction = RIGHT
     next_direction = None
     body_color = SNAKE_COLOR
-    last = None
 
     def __init__(self):
-        """Constructor"""
+        """Constructor."""
         super().__init__()
         self.length = 1
         self.positions = [(self.position)]
@@ -136,19 +132,19 @@ class Snake(GameObject):
     def draw(self):
         """Draws the snake"""
         for position in self.positions[:-1]:
-            rect = (pygame.Rect(position, (GRID_SIZE, GRID_SIZE)))
-            pygame.draw.rect(screen, self.body_color, rect)
-            pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+            rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
+            pg.draw.rect(screen, self.body_color, rect)
+            pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
         # Отрисовка головы змейки
-        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(screen, self.body_color, head_rect)
-        pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
+        head_rect = pg.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+        pg.draw.rect(screen, self.body_color, head_rect)
+        pg.draw.rect(screen, BORDER_COLOR, head_rect, 1)
 
         # Затирание последнего сегмента
         if self.last:
-            last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
-            pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
+            last_rect = pg.Rect(self.last, (GRID_SIZE, GRID_SIZE))
+            pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
     def reset(self):
         """Resets the snake"""
@@ -158,25 +154,25 @@ class Snake(GameObject):
 
 def handle_keys(game_object):
     """Handles user input"""
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
             raise SystemExit
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP and game_object.direction != DOWN:
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_UP and game_object.direction != DOWN:
                 game_object.next_direction = UP
-            elif event.key == pygame.K_DOWN and game_object.direction != UP:
+            elif event.key == pg.K_DOWN and game_object.direction != UP:
                 game_object.next_direction = DOWN
-            elif event.key == pygame.K_LEFT and game_object.direction != RIGHT:
+            elif event.key == pg.K_LEFT and game_object.direction != RIGHT:
                 game_object.next_direction = LEFT
-            elif event.key == pygame.K_RIGHT and game_object.direction != LEFT:
+            elif event.key == pg.K_RIGHT and game_object.direction != LEFT:
                 game_object.next_direction = RIGHT
 
 
 def main():
     """Main function"""
-    # Инициализация PyGame:
-    pygame.init()
+    # Инициализация pg:
+    pg.init()
     # Тут нужно создать экземпляры классов.
 
     snake = Snake()
@@ -194,7 +190,7 @@ def main():
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw()
         apple.draw()
-        pygame.display.update()
+        pg.display.update()
 
 
 if __name__ == '__main__':
@@ -203,42 +199,42 @@ if __name__ == '__main__':
 
 # Метод draw класса Apple
 # def draw(self):
-#     rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
-#     pygame.draw.rect(screen, self.body_color, rect)
-#     pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+#     rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
+#     pg.draw.rect(screen, self.body_color, rect)
+#     pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 # # Метод draw класса Snake
 # def draw(self):
 #     for position in self.positions[:-1]:
-#         rect = (pygame.Rect(position, (GRID_SIZE, GRID_SIZE)))
-#         pygame.draw.rect(screen, self.body_color, rect)
-#         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+#         rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
+#         pg.draw.rect(screen, self.body_color, rect)
+#         pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 #     # Отрисовка головы змейки
-#     head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-#     pygame.draw.rect(screen, self.body_color, head_rect)
-#     pygame.draw.rect(screen, BORDER_COLOR, head_rect, 1)
+#     head_rect = pg.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
+#     pg.draw.rect(screen, self.body_color, head_rect)
+#     pg.draw.rect(screen, BORDER_COLOR, head_rect, 1)
 
 #     # Затирание последнего сегмента
 #     if self.last:
-#         last_rect = pygame.Rect(self.last, (GRID_SIZE, GRID_SIZE))
-#         pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
+#         last_rect = pg.Rect(self.last, (GRID_SIZE, GRID_SIZE))
+#         pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
 # Функция обработки действий пользователя
 # def handle_keys(game_object):
-#     for event in pygame.event.get():
-#         if event.type == pygame.QUIT:
-#             pygame.quit()
+#     for event in pg.event.get():
+#         if event.type == pg.QUIT:
+#             pg.quit()
 #             raise SystemExit
-#         elif event.type == pygame.KEYDOWN:
-#             if event.key == pygame.K_UP and game_object.direction != DOWN:
+#         elif event.type == pg.KEYDOWN:
+#             if event.key == pg.K_UP and game_object.direction != DOWN:
 #                 game_object.next_direction = UP
-#             elif event.key == pygame.K_DOWN and game_object.direction != UP:
+#             elif event.key == pg.K_DOWN and game_object.direction != UP:
 #                 game_object.next_direction = DOWN
-#             elif event.key == pygame.K_LEFT and game_object.direction !=
+#             elif event.key == pg.K_LEFT and game_object.direction !=
 # RIGHT:
 #                 game_object.next_direction = LEFT
-#             elif event.key == pygame.K_RIGHT and game_object.direction !=
+#             elif event.key == pg.K_RIGHT and game_object.direction !=
 # LEFT:
 #                 game_object.next_direction = RIGHT
 
