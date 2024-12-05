@@ -177,7 +177,7 @@ def main():
     """Main function."""
     # Инициализация pg:
     pg.init()
-    
+
     snake = Snake()
     apple = Apple(snake.positions)
     screen.fill(BOARD_BACKGROUND_COLOR)
@@ -198,4 +198,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
