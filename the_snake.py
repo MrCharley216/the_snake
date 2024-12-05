@@ -1,6 +1,7 @@
 """The snake game."""
 from random import choice, randint
-import pg as pg
+
+import pygame as pg
 
 # Константы для размеров поля и сетки:
 SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
