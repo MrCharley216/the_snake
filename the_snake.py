@@ -53,6 +53,7 @@ class GameObject:
         self.position = [(SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)]
         self.body_color = CELL_COLOR
 
+    # Метод отрисовки ячейки
     def draw_cell(self, cell=((SCREEN_WIDTH // 3) * GRID_SIZE,
                               (SCREEN_HEIGHT // 4) * GRID_SIZE)):
         """Draws the cell."""
@@ -60,6 +61,7 @@ class GameObject:
         pg.draw.rect(screen, self.body_color, rect)
         pg.draw.rect(screen, self.body_color, rect, 1)
 
+    # Метод отрисовки игрового объекта
     def draw(self):
         """Draws the game object."""
         NotImplementedError
@@ -82,8 +84,8 @@ class Apple(GameObject):
         )
         while self.position in emp_cells:
             self.randomize_position(emp_cells)
-    # Метод отрисовки яблока
 
+    # Метод отрисовки яблока
     def draw(self):
         """Draws the apple."""
         rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
@@ -106,16 +108,19 @@ class Snake(GameObject):
         self.body_color = SNAKE_COLOR
         self.last = None
 
+    # Метод получения позиции головы змейки
     def get_head_position(self):
         """Returns the head position of the snake."""
         return self.positions[0]
 
+    # Метод обновления направления змейки
     def update_direction(self):
         """Updates the direction of the snake."""
         if self.next_direction:
             self.direction = self.next_direction
             self.next_direction = None
 
+    # Метод движения змейки
     def move(self):
         """Moves the snake."""
         head_x, head_y = self.get_head_position()
@@ -125,6 +130,7 @@ class Snake(GameObject):
         if len(self.positions) > self.length:
             self.positions.pop()
 
+    # Метод отрисовки змейки
     def draw(self):
         """Draws the snake."""
         # Отрисовка головы змейки
@@ -137,6 +143,7 @@ class Snake(GameObject):
             last_rect = pg.Rect(self.last, (GRID_SIZE, GRID_SIZE))
             pg.draw.rect(screen, BOARD_BACKGROUND_COLOR, last_rect)
 
+    # Метод сброса змейки
     def reset(self):
         """Resets the snake"""
         self.positions = [self.position]
