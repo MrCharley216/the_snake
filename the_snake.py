@@ -94,6 +94,8 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Snake class description."""
 
+    last = None
+
     def __init__(self):
         """Constructor."""
         super().__init__()
@@ -117,29 +119,14 @@ class Snake(GameObject):
     def move(self):
         """Moves the snake."""
         head_x, head_y = self.get_head_position()
-        x, y = self.direction
-        self.positions[0] = (head_x + x * GRID_SIZE, head_y + y * GRID_SIZE)
-        if self.positions[0][0] < 0:
-            self.positions[0] = (GRID_WIDTH * GRID_SIZE,
-                                 head_y + y * GRID_SIZE)
-        if self.positions[0][0] >= GRID_WIDTH * GRID_SIZE:
-            self.positions[0] = (0, head_y + y * GRID_SIZE)
-        if self.positions[0][1] < 0:
-            self.positions[0] = (head_x + x * GRID_SIZE,
-                                 GRID_HEIGHT * GRID_SIZE)
-        if self.positions[0][1] >= GRID_HEIGHT * GRID_SIZE:
-            self.positions[0] = (head_x + x * GRID_SIZE, 0)
-        self.positions.insert(0, self.positions[0])
+        dx, dy = self.direction
+        self.positions.insert(0, ((head_x + dx * GRID_SIZE) % SCREEN_WIDTH,
+                                  (head_y + dy * GRID_SIZE) % SCREEN_HEIGHT))
         if len(self.positions) > self.length:
             self.positions.pop()
 
     def draw(self):
         """Draws the snake."""
-        for position in self.positions[:-1]:
-            rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
-            pg.draw.rect(screen, self.body_color, rect)
-            pg.draw.rect(screen, BORDER_COLOR, rect, 1)
-
         # Отрисовка головы змейки
         head_rect = pg.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, self.body_color, head_rect)
@@ -162,7 +149,7 @@ def handle_keys(game_object):
         if event.type == pg.QUIT:
             pg.quit()
             raise SystemExit
-        elif event.type == pg.KEYDOWN:
+        if event.type == pg.KEYDOWN:
             if event.key == pg.K_UP and game_object.direction != DOWN:
                 game_object.next_direction = UP
             elif event.key == pg.K_DOWN and game_object.direction != UP:
@@ -191,6 +178,8 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
+        if snake.get_head_position() == snake.positions[1:]:
+            snake.reset()
         snake.draw()
         apple.draw()
         pg.display.update()
