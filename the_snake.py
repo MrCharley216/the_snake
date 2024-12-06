@@ -71,13 +71,14 @@ class Apple(GameObject):
     """Apple class description."""
 
     def __init__(self, emp_cells):
+        """Apple constructor."""
         super().__init__()
         self.body_color = APPLE_COLOR
         self.randomize_position(emp_cells)
 
-    # Метод случайного позиционирования яблока
     def randomize_position(self, emp_cells):
         """Randomizes the position of the apple."""
+        # Метод случайного позиционирования яблока
         self.position = (
             randint(0, GRID_WIDTH) * GRID_SIZE,
             randint(0, GRID_HEIGHT) * GRID_SIZE
@@ -97,8 +98,9 @@ class Snake(GameObject):
     """Snake class description."""
 
     def __init__(self):
-        """Constructor."""
+        """Snake constructor."""
         super().__init__()
+        self.reset()
         self.length = 1
         self.positions = [(self.position)]
         self.direction = choice(list_dir)
@@ -145,6 +147,7 @@ class Snake(GameObject):
     def reset(self):
         """Resets the snake"""
         self.positions = [self.position]
+        self.length = 1
         self.last = None
 
 
@@ -172,15 +175,15 @@ def main():
 
     snake = Snake()
     apple = Apple(snake.positions)
-    screen.fill(BOARD_BACKGROUND_COLOR)
 
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
         snake.update_direction()
         snake.move()
-        if snake.get_head_position() == snake.positions:
+        if snake.get_head_position() in snake.positions[1:]:
             snake.reset()
+            screen.fill(BOARD_BACKGROUND_COLOR)
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
