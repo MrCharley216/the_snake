@@ -96,8 +96,6 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Snake class description."""
 
-    last = None
-
     def __init__(self):
         """Constructor."""
         super().__init__()
