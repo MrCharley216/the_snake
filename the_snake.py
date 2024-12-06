@@ -126,7 +126,7 @@ class Snake(GameObject):
         self.positions.insert(0, ((head_x + dx * GRID_SIZE) % SCREEN_WIDTH,
                                   (head_y + dy * GRID_SIZE) % SCREEN_HEIGHT))
         if len(self.positions) > self.length:
-            self.positions.pop()
+            self.last = self.positions.pop()
 
     # Метод отрисовки змейки
     def draw(self):
@@ -179,12 +179,11 @@ def main():
         handle_keys(snake)
         snake.update_direction()
         snake.move()
-
+        if snake.get_head_position() == snake.positions:
+            snake.reset()
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
-        if snake.get_head_position() == snake.positions[1:]:
-            snake.reset()
         snake.draw()
         apple.draw()
         pg.display.update()
