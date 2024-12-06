@@ -24,7 +24,6 @@ TIMEOUT_ASSERT_MSG = (
     '`tick` объекта `clock`. Не изменяйте прекод в этой части.'
 )
 
-
 def import_the_snake():
     import the_snake  # noqa
 

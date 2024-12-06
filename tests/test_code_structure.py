@@ -1,4 +1,4 @@
-import pg
+import pygame
 import pytest
 
 
