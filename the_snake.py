@@ -69,7 +69,7 @@ class GameObject:
 class Apple(GameObject):
     """Apple class description."""
 
-    def __init__(self, emp_cells):
+    def __init__(self, emp_cells=[(SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2)]):
         """Apple constructor."""
         super().__init__()
         self.body_color = APPLE_COLOR
