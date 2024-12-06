@@ -113,8 +113,8 @@ def test_elements_exist(element_type, element_name, _the_snake):
 @pytest.mark.parametrize(
     'expected_type, var_name',
     (
-        (pg.Surface, 'screen'),
-        (pg.time.Clock, 'clock'),
+        (pygame.Surface, 'screen'),
+        (pygame.time.Clock, 'clock'),
     ),
 )
 
