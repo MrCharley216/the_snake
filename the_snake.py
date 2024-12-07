@@ -75,7 +75,7 @@ class Apple(GameObject):
         self.randomize_position(emp_cells)
 
     def randomize_position(self, emp_cells):
-        """Randomizes the position of the apple."""        
+        """Randomizes the position of the apple."""
         # Метод случайного позиционирования яблока
         while self.position in emp_cells:
             self.position = (
