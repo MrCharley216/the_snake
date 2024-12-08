@@ -59,7 +59,6 @@ class GameObject:
         pg.draw.rect(screen, self.body_color, rect)
         pg.draw.rect(screen, self.body_color, rect, 1)
 
-    # Метод отрисовки игрового объекта
     def draw(self):
         """Draws the game object."""
         raise NotImplementedError
@@ -71,16 +70,16 @@ class Apple(GameObject):
     def __init__(self, emp_cells=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))):
         """Apple constructor."""
         super().__init__()
+        self.position = (10 * GRID_SIZE, 10 * GRID_SIZE)
         self.body_color = APPLE_COLOR
         self.randomize_position(emp_cells)
 
     def randomize_position(self, emp_cells):
         """Randomizes the position of the apple."""
-        # Метод случайного позиционирования яблока
         while self.position in emp_cells:
             self.position = (
-                randint(0, GRID_WIDTH) * GRID_SIZE,
-                randint(0, GRID_HEIGHT) * GRID_SIZE
+                randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+                randint(0, GRID_HEIGHT - 1) * GRID_SIZE
             )
 
     def draw(self):
