@@ -70,7 +70,6 @@ class Apple(GameObject):
     def __init__(self, emp_cells=((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))):
         """Apple constructor."""
         super().__init__()
-        self.position = (10 * GRID_SIZE, 10 * GRID_SIZE)
         self.body_color = APPLE_COLOR
         self.randomize_position(emp_cells)
 
